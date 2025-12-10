@@ -3,253 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simuladores de Energía (Iconos)</title>
+    <title>Simuladores de Energía Argentina</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
-    <style>
-        /* ESTILOS BASE */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f7f9;
-            height: 100vh;
-            transition: all 0.3s ease;
-        }
-        #app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lorenarodriguez171293/kkfsa/main/Gemini_Generated_Image_z9txzuz9txzuz9tx.png">
 
-        /* HEADER Y SELECTOR DE ICONOS */
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 45px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        h1 {
-            margin: 0 0 10px 0;
-            font-size: 1.5rem;
-            text-align: center;
-        }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        overflow-x: hidden;
+    }
 
-        #icon-selector {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            transition: all 0.3s ease;
-        }
+    /* Pantalla de inicio */
+    #introScreen {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100vh;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
 
-        .sim-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background-color 0.2s, transform 0.1s;
-            width: 90px;
-            min-height: 70px;
-        }
+    #introScreen img {
+        width: 70%;
+        max-width: 350px;
+        border-radius: 50%;
+        border: 8px solid #fff;
+        animation: fadeIn 2s ease-out;
+    }
 
-        .sim-link:hover, .sim-link.active {
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.90); }
+        to { opacity: 1; transform: scale(1); }
+    }
 
-        .sim-link i {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            color: #4CAF50;
-        }
+    /* Título */
+    header {
+        text-align: center;
+        padding: 10px;
+    }
 
-        .sim-link span {
-            font-size: 0.75rem;
-            line-height: 1.1;
-        }
+    header img {
+        width: 120px;
+        border-radius: 50%;
+        border: 5px solid #ddd;
+    }
 
-        /* CONTENEDOR PRINCIPAL */
-        main {
-            flex-grow: 1;
-            padding: 0;
-            overflow: hidden;
-        }
-        #simulador-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            transition: all 0.3s ease;
-        }
+    /* Menu deslizable */
+    .sim-icons {
+        display: flex;
+        gap: 18px;
+        margin-top: 15px;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px;
+        scroll-snap-type: x mandatory;
+    }
 
-        /* Icono de inicio */
-        .home-link i { color: #f39c12 !important; }
-        .home-link:hover { background-color: rgba(243, 156, 18, 0.2) !important; }
+    .sim-icons::-webkit-scrollbar {
+        display: none;
+    }
 
-        /* -------------------------------------------- */
-        /*     MODO PANTALLA COMPLETA PARA CELULARES    */
-        /* -------------------------------------------- */
-        @media (max-width: 768px) {
+    /* Contenedor individual */
+    .sim-item {
+        text-align: center;
+        flex-shrink: 0;
+        scroll-snap-align: center;
+    }
 
-            body.fullscreen-mode header {
-                height: 45px;
-                overflow: hidden;
-                padding: 5px;
-            }
+    .sim-item span {
+        display: block;
+        font-size: 10px;
+        margin-top: 4px;
+        color: #333;
+    }
 
-            body.fullscreen-mode #icon-selector {
-                display: flex;
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                gap: 8px;
-            }
+    .sim-icons i {
+        font-size: 34px;
+        padding: 14px;
+        background: #f0f0f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
 
-            body.fullscreen-mode .sim-link {
-                width: 55px;
-                min-height: 55px;
-                padding: 5px;
-            }
+    /* Menu pequeño */
+    .mini-menu i {
+        font-size: 24px !important;
+        padding: 10px !important;
+    }
 
-            body.fullscreen-mode .sim-link span {
-                display: none;
-            }
-
-            body.fullscreen-mode #simulador-frame {
-                position: fixed;
-                top: 45px;
-                left: 0;
-                width: 100vw;
-                height: calc(100vh - 100px);
-                z-index: 5;
-            }
-
-            /* BOTÓN SALIR */
-            #exit-fullscreen {
-                display: none;
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                z-index: 50;
-                background: #e74c3c;
-                color: white;
-                padding: 12px 18px;
-                border-radius: 8px;
-                font-size: 1rem;
-                font-weight: bold;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-                border: none;
-            }
-
-            body.fullscreen-mode #exit-fullscreen {
-                display: block;
-            }
-        }
-    </style>
+    #visorSimulador {
+        width: 100%;
+        height: 87vh;
+        border: none;
+        margin-top: 10px;
+        display: none;
+    }
+</style>
 </head>
 <body>
 
-    <div id="app-container">
-        <header>
-            <h1>  Simuladores de Energías Alternativas  </h1>
-            
-            <div id="icon-selector">
-                <a href="#" class="sim-link home-link active" onclick="cargarSimulador('intro.html', event, true)" title="Información y Matriz Energética">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Inicio/Info</span>
-                </a>
-            </div>
-        </header>
+<!-- Pantalla inicial -->
+<div id="introScreen">
+    <img src="https://raw.githubusercontent.com/lorenarodriguez171293/kkfsa/main/Gemini_Generated_Image_z9txzuz9txzuz9tx.png">
+</div>
 
-        <main>
-            <iframe id="simulador-frame" title="Contenido del Dashboard" src="intro.html"></iframe>
-        </main>
+<header>
+    <img src="https://raw.githubusercontent.com/lorenarodriguez171293/kkfsa/main/Gemini_Generated_Image_z9txzuz9txzuz9tx.png">
+    <h2>Simuladores de Energía</h2>
+</header>
+
+<!-- Íconos con nombres -->
+<div class="sim-icons" id="menuSelector">
+
+    <div class="sim-item">
+        <i class="fas fa-info-circle" onclick="abrirSimulador('info_energias.html')"></i>
+        <span>Introducción</span>
     </div>
 
-    <!-- BOTÓN SALIR DE PANTALLA COMPLETA -->
-    <button id="exit-fullscreen" onclick="salirPantallaCompleta()">Salir</button>
+    <div class="sim-item">
+        <i class="fas fa-bolt" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/fotovol/')"></i>
+        <span>Solar</span>
+    </div>
 
-    <script>
-        const simuladores = [
-            { name: "Mapa Interactivo", key: "mapa", path: "https://lorenarodriguez171293.github.io/mapainteractivo01/", icon: "fas fa-map-marked-alt", tooltip: "Mapa de proyectos energéticos en Argentina" },
-            { name: "Consumo Hogar", key: "consumo", path: "https://lorenarodriguez171293.github.io/casaconsumo/", icon: "fas fa-home", tooltip: "Calculadora de consumo eléctrico doméstico" },
-            { name: "Eólico", key: "eolico", path: "https://lorenarodriguez171293.github.io/eolica01/", icon: "fas fa-wind", tooltip: "Simulador de producción eólica" },
-            { name: "Fotovoltaico", key: "fotovol", path: "https://lorenarodriguez171293.github.io/fotovol/", icon: "fas fa-solar-panel", tooltip: "Simulador de panel solar fotovoltaico" },
-            { name: "Hidroeléctrico", key: "hidro", path: "https://lorenarodriguez171293.github.io/hidro/", icon: "fas fa-water", tooltip: "Demostración de energía hidráulica" },
-            { name: "Nuclear", key: "nuclear", path: "https://lorenarodriguez171293.github.io/NU1/", icon: "fas fa-atom", tooltip: "Simulador de energía nuclear por fisión" },
-            { name: "Biocombustibles", key: "bio", path: "https://lorenarodriguez171293.github.io/biodisel/", icon: "fas fa-leaf", tooltip: "Simulador de mezcla de biodiesel (B%)" },
-            { name: "Autoevaluación", key: "eval", path: "https://lorenarodriguez171293.github.io/autoeva/", icon: "fas fa-clipboard-list", tooltip: "Cuestionario de autoevaluación" },
-        ];
+    <div class="sim-item">
+        <i class="fas fa-wind" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/eolica01/')"></i>
+        <span>Eólica</span>
+    </div>
 
-        const frame = document.getElementById('simulador-frame');
-        const selectorContainer = document.getElementById('icon-selector');
+    <div class="sim-item">
+        <i class="fas fa-atom" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/NU1/')"></i>
+        <span>Nuclear</span>
+    </div>
 
-        /* -------------------------------
-           GENERAR LOS ICONOS DINÁMICOS
-        -------------------------------- */
-        function generarSelector() {
-            simuladores.forEach(sim => {
-                const link = document.createElement('a');
-                
-                link.href = "#";
-                link.classList.add('sim-link');
-                link.title = sim.tooltip;
-                
-                link.innerHTML = `<i class="${sim.icon}"></i><span>${sim.name}</span>`;
+    <div class="sim-item">
+        <i class="fas fa-water" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/hidro/')"></i>
+        <span>Hidráulica</span>
+    </div>
 
-                link.addEventListener('click', (e) => {
-                    cargarSimulador(sim.path, e);
-                });
+    <div class="sim-item">
+        <i class="fas fa-leaf" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/biodisel/')"></i>
+        <span>Biocombustibles</span>
+    </div>
 
-                selectorContainer.appendChild(link);
-            });
-        }
+    <div class="sim-item">
+        <i class="fas fa-globe-americas" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/mapainteractivo01/')"></i>
+        <span>Mapa</span>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', generarSelector);
+    <div class="sim-item">
+        <i class="fas fa-home" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/casaconsumo/')"></i>
+        <span>Hogar</span>
+    </div>
 
+    <div class="sim-item">
+        <i class="fas fa-clipboard-check" onclick="abrirSimulador('https://lorenarodriguez171293.github.io/autoeva/')"></i>
+        <span>Autoeval.</span>
+    </div>
 
-        /* ------------------------------------------------
-           FUNCIÓN ORIGINAL + MODO FULLSCREEN PARA CELULAR
-        ------------------------------------------------- */
+</div>
 
-        const cargarSimuladorOriginal = function(path, event, isHome){
-            if (event) event.preventDefault();
+<iframe id="visorSimulador"></iframe>
 
-            frame.src = path;
+<script>
+window.onload = () => {
+    setTimeout(() => {
+        document.getElementById("introScreen").style.display = "none";
+    }, 2000);
+};
 
-            document.querySelectorAll('.sim-link').forEach(btn => btn.classList.remove('active'));
+/* Abrir simuladores */
+function abrirSimulador(url) {
+    const visor = document.getElementById("visorSimulador");
+    visor.src = url;
+    visor.style.display = "block";
+    document.getElementById("menuSelector").classList.add("mini-menu");
+}
+</script>
 
-            if (event) {
-                event.currentTarget.classList.add('active');
-            } else if (isHome) {
-                document.querySelector('.home-link').classList.add('active');
-            }
-        };
-
-        window.cargarSimulador = function(path, event, isHome = false) {
-            cargarSimuladorOriginal(path, event, isHome);
-
-            if (isHome) {
-                document.body.classList.remove("fullscreen-mode");
-            } else {
-                if (window.innerWidth <= 768) {
-                    document.body.classList.add("fullscreen-mode");
-                }
-            }
-        };
-
-        /* --------------------------------------------
-            BOTÓN SALIR DE PANTALLA COMPLETA
-        -------------------------------------------- */
-        function salirPantallaCompleta() {
-            document.body.classList.remove("fullscreen-mode");
-        }
-    </script>
 </body>
 </html>
