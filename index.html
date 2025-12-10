@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Simuladores de Energía</title>
+    <style>
+        /* ESTILOS GENERALES */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f7f9;
+            height: 100vh;
+        }
+        #app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* HEADER Y SELECTOR */
+        header {
+            background-color: #0b5ed7;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            z-index: 10; /* Asegurar que esté por encima del iframe */
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        #selector-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        select {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ccc;
+            min-width: 250px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* CONTENEDOR PRINCIPAL (IFRAME) */
+        main {
+            flex-grow: 1;
+            padding: 0;
+            overflow: hidden; /* Evita barras de desplazamiento innecesarias en el contenedor */
+        }
+        #simulador-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none; /* Ocultar inicialmente */
+        }
+        .placeholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.4rem;
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <header>
+            <h1>Dashboard de Simuladores</h1>
+            <div id="selector-controls">
+                <label for="simulador-select" style="font-weight: bold;">Selecciona un simulador:</label>
+                <select id="simulador-select"></select>
+                <button onclick="cargarSimulador()">Cargar</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="placeholder" class="placeholder">
+                Usa el selector para cargar uno de los simuladores.
+                <br><small style="font-size: 0.8em; color: #999; margin-top: 10px;">Asegúrate de haber subido todas las carpetas a GitHub.</small>
+            </div>
+            <iframe id="simulador-frame" title="Contenido del Simulador"></iframe>
+        </main>
+    </div>
+
+    <script>
+        // Lista de simuladores con su nombre y la ruta relativa al archivo index.html
+        const simuladores = [
+            { name: "01. Mapa Interactivo de Proyectos", path: "mapainteractivo01-main/index.html" },
+            { name: "02. Calculadora de Consumo (Hogar)", path: "casaconsumo-main/index.html" },
+            { name: "03. Simulador Eólico (Producción)", path: "eolica01-main/index.html" },
+            { name: "04. Simulador Fotovoltaico (Panel)", path: "fotovol-main/index.html" },
+            { name: "05. Demostración Hidroeléctrica", path: "hidro-main/index.html" },
+            { name: "06. Simulador Nuclear por Fisión", path: "NU1-main/index.html" },
+            { name: "07. Simulador de Mezcla de Biocombustibles (B%)", path: "biodisel-main/index.html" },
+            { name: "08. Autoevaluación de Energías Alternativas", path: "autoeva-main/index.html" },
+        ];
+
+        const select = document.getElementById('simulador-select');
+        const frame = document.getElementById('simulador-frame');
+        const placeholder = document.getElementById('placeholder');
+
+        // Función para llenar el menú desplegable (select)
+        function llenarSelector() {
+            // Opción por defecto
+            let defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Selecciona uno para cargar --";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            select.appendChild(defaultOption);
+
+            // Agregar las opciones de los simuladores
+            simuladores.forEach(sim => {
+                let option = document.createElement('option');
+                option.value = sim.path;
+                option.textContent = sim.name;
+                select.appendChild(option);
+            });
+        }
+
+        // Función para cargar el simulador en el iframe
+        function cargarSimulador() {
+            const selectedPath = select.value;
+            if (selectedPath) {
+                // Establece la URL del simulador
+                frame.src = selectedPath;
+                // Muestra el iframe y oculta el mensaje de bienvenida
+                frame.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                alert("Por favor, selecciona un simulador de la lista.");
+            }
+        }
+
+        // Inicializar el selector al cargar la página
+        document.addEventListener('DOMContentLoaded', llenarSelector);
+    </script>
+</body>
+</html>
