@@ -53,11 +53,11 @@
             padding: 8px 12px;
             border-radius: 8px;
             transition: background-color 0.2s, transform 0.1s;
-            width: 90px; /* Ancho fijo para las tarjetas/botones */
+            width: 90px;
             min-height: 70px;
         }
 
-        .sim-link:hover {
+        .sim-link:hover, .sim-link.active {
             background-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
         }
@@ -83,26 +83,11 @@
             width: 100%;
             height: 100%;
             border: none;
-            display: none;
-        }
-        .placeholder {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            font-size: 1.4rem;
-            color: #666;
-            text-align: center;
-            padding: 20px;
         }
 
-        /* Responsive para móviles */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.3rem; }
-            .sim-link { width: 80px; padding: 6px 10px; }
-            .sim-link i { font-size: 1.5rem; }
-            .sim-link span { font-size: 0.65rem; }
-        }
+        /* Estilo para el botón de inicio */
+        .home-link i { color: #f39c12 !important; }
+        .home-link:hover { background-color: rgba(243, 156, 18, 0.2) !important; }
     </style>
 </head>
 <body>
@@ -112,79 +97,52 @@
             <h1>Panel de Simuladores de Energías Alternativas</h1>
             
             <div id="icon-selector">
+                <a href="#" class="sim-link home-link active" onclick="cargarSimulador('intro.html', event, true)" title="Información y Matriz Energética">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Inicio/Info</span>
+                </a>
                 </div>
         </header>
 
         <main>
-            <div id="placeholder" class="placeholder">
-                Selecciona una aplicación de la barra superior para cargar el simulador.
-            </div>
-            <iframe id="simulador-frame" title="Contenido del Simulador"></iframe>
+            <iframe id="simulador-frame" title="Contenido del Dashboard" src="intro.html"></iframe>
         </main>
     </div>
 
     <script>
-        // 🚨 Lista de Simuladores con Rutas Relativas y Iconos 🚨
+        // 🚨🚨🚨 INSTRUCCIÓN CLAVE: REEMPLAZA LOS LINKS DE EJEMPLO ABAJO 🚨🚨🚨
+        // Asume que la URL de tu repositorio es: https://[USUARIO].github.io/[REPOSITORIO]/
+        const BASE_URL = "https://[USUARIO].github.io/[REPOSITORIO]/"; // <--- REEMPLAZA ESTO
+        
         const simuladores = [
-            { 
-                name: "Mapa Interactivo", 
-                path: "mapainteractivo01-main/index.html", 
-                icon: "fas fa-map-marked-alt",
-                tooltip: "Mapa de proyectos energéticos en Argentina" 
-            },
-            { 
-                name: "Consumo Hogar", 
-                path: "casaconsumo-main/index.html", 
-                icon: "fas fa-home",
-                tooltip: "Calculadora de consumo eléctrico doméstico" 
-            },
-            { 
-                name: "Eólico", 
-                path: "eolica01-main/index.html", 
-                icon: "fas fa-wind",
-                tooltip: "Simulador de producción eólica" 
-            },
-            { 
-                name: "Fotovoltaico", 
-                path: "fotovol-main/index.html", 
-                icon: "fas fa-solar-panel",
-                tooltip: "Simulador de panel solar fotovoltaico" 
-            },
-            { 
-                name: "Hidroeléctrico", 
-                path: "hidro-main/index.html", 
-                icon: "fas fa-water",
-                tooltip: "Demostración de energía hidráulica" 
-            },
-            { 
-                name: "Nuclear", 
-                path: "NU1-main/index.html", 
-                icon: "fas fa-atom",
-                tooltip: "Simulador de energía nuclear por fisión" 
-            },
-            { 
-                name: "Biocombustibles", 
-                path: "biodisel-main/index.html", 
-                icon: "fas fa-leaf",
-                tooltip: "Simulador de mezcla de biodiesel (B%)" 
-            },
-            { 
-                name: "Autoevaluación", 
-                path: "autoeva-main/index.html", 
-                icon: "fas fa-clipboard-list",
-                tooltip: "Cuestionario de autoevaluación" 
-            },
+            // Reemplazar la 'path' con la URL completa si tiene diferentes repositorios.
+            // Si todo está en el mismo repositorio, las rutas relativas también funcionan.
+            { name: "Mapa Interactivo", key: "mapa", path: BASE_URL + "https://lorenarodriguez171293.github.io/mapainteractivo01/index.html", icon: "fas fa-map-marked-alt", tooltip: "Mapa de proyectos energéticos en Argentina" },
+            { name: "Consumo Hogar", key: "consumo", path: BASE_URL + "https://lorenarodriguez171293.github.io/casaconsumo/index.html", icon: "fas fa-home", tooltip: "Calculadora de consumo eléctrico doméstico" },
+            { name: "Eólico", key: "eolico", path: BASE_URL + "https://lorenarodriguez171293.github.io/eolica01/index.html", icon: "fas fa-wind", tooltip: "Simulador de producción eólica" },
+            { name: "Fotovoltaico", key: "fotovol", path: BASE_URL + "https://lorenarodriguez171293.github.io/fotovol/index.html", icon: "fas fa-solar-panel", tooltip: "Simulador de panel solar fotovoltaico" },
+            { name: "Hidroeléctrico", key: "hidro", path: BASE_URL + "https://lorenarodriguez171293.github.io/biodisel/index.html", icon: "fas fa-water", tooltip: "Demostración de energía hidráulica" },
+            { name: "Nuclear", key: "nuclear", path: BASE_URL + "https://lorenarodriguez171293.github.io/NU1/index.html", icon: "fas fa-atom", tooltip: "Simulador de energía nuclear por fisión" },
+            { name: "Biocombustibles", key: "bio", path: BASE_URL + "https://lorenarodriguez171293.github.io/biodisel//index.html", icon: "fas fa-leaf", tooltip: "Simulador de mezcla de biodiesel (B%)" },
+            { name: "Autoevaluación", key: "eval", path: BASE_URL + "https://lorenarodriguez171293.github.io/autoeva/index.html", icon: "fas fa-clipboard-list", tooltip: "Cuestionario de autoevaluación" },
         ];
 
         const frame = document.getElementById('simulador-frame');
-        const placeholder = document.getElementById('placeholder');
         const selectorContainer = document.getElementById('icon-selector');
 
         // Función para cargar el simulador en el iframe
-        function cargarSimulador(path) {
+        window.cargarSimulador = function(path, event, isHome = false) {
+            if (event) event.preventDefault(); // Evita que la página se recargue
+
             frame.src = path;
-            frame.style.display = 'block';
-            placeholder.style.display = 'none';
+            
+            // Lógica para resaltar el botón activo
+            document.querySelectorAll('.sim-link').forEach(btn => btn.classList.remove('active'));
+            if (event) {
+                event.currentTarget.classList.add('active');
+            } else if (isHome) {
+                document.querySelector('.home-link').classList.add('active');
+            }
         }
 
         // Función para generar los iconos en el DOM
@@ -192,29 +150,20 @@
             simuladores.forEach(sim => {
                 const link = document.createElement('a');
                 
-                // Configura el elemento <a>
-                link.href = "#"; // Se usa JS para la navegación, no la navegación por defecto
+                link.href = "#";
                 link.classList.add('sim-link');
-                link.title = sim.tooltip; // Muestra el tooltip al pasar el mouse
+                link.title = sim.tooltip;
                 
-                // Contenido del ícono y texto
                 link.innerHTML = `<i class="${sim.icon}"></i><span>${sim.name}</span>`;
 
-                // Agrega el evento de click
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Evita que la página se recargue
-                    cargarSimulador(sim.path);
-
-                    // Opcional: Resaltar el botón activo (simple CSS)
-                    document.querySelectorAll('.sim-link').forEach(btn => btn.style.backgroundColor = 'transparent');
-                    link.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    cargarSimulador(sim.path, e);
                 });
 
                 selectorContainer.appendChild(link);
             });
         }
 
-        // Inicializar el selector al cargar la página
         document.addEventListener('DOMContentLoaded', generarSelector);
     </script>
 </body>
